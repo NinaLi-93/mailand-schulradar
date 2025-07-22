@@ -921,22 +921,64 @@
         function updateVisibleSchools() {
             if (!map || !schoolsData || schoolsData.length === 0) return;
             
-            // Get current map bounds
-            const bounds = map.getBounds();
+            let schoolsToDisplay = [];
             
-            // Filter schools that are visible in current view
-            const visibleSchools = schoolsData.filter(school => 
-                bounds.contains([school.LAT_Y_4326, school.LONG_X_4326])
-            );
+            // If user has searched for an address, show only schools within radius
+            if (userLocation) {
+                const radius = parseInt(document.getElementById('radiusSelect').value);
+                
+                // Filter schools within the search radius
+                schoolsToDisplay = schoolsData.filter(school => {
+                    const distance = calculateDistance(
+                        userLocation.lat, userLocation.lon,
+                        school.LAT_Y_4326, school.LONG_X_4326
+                    );
+                    return distance <= radius;
+                }).map(school => {
+                    // Add distance to each school
+                    const distance = calculateDistance(
+                        userLocation.lat, userLocation.lon,
+                        school.LAT_Y_4326, school.LONG_X_4326
+                    );
+                    return {
+                        ...school,
+                        distance: Math.round(distance)
+                    };
+                });
+                
+                // Sort by distance
+                schoolsToDisplay.sort((a, b) => a.distance - b.distance);
+                
+            } else {
+                // No address search - show schools visible in current map view
+                const bounds = map.getBounds();
+                schoolsToDisplay = schoolsData.filter(school => 
+                    bounds.contains([school.LAT_Y_4326, school.LONG_X_4326])
+                );
+            }
             
             // Update results display
-            displayVisibleSchools(visibleSchools);
+            displayVisibleSchools(schoolsToDisplay);
         }
 
         // Display schools visible in current map view
         function displayVisibleSchools(visibleSchools) {
             const resultsContainer = document.getElementById('schoolResults');
             const statsContainer = document.getElementById('resultsStats');
+            
+            // Calculate distances if user location is available
+            if (userLocation) {
+                visibleSchools.forEach(school => {
+                    const distance = calculateDistance(
+                        userLocation.lat, userLocation.lon,
+                        school.LAT_Y_4326, school.LONG_X_4326
+                    );
+                    school.distance = Math.round(distance);
+                });
+                
+                // Sort by distance if user location is available
+                visibleSchools.sort((a, b) => a.distance - b.distance);
+            }
             
             // Calculate statistics for visible schools
             const schoolsWithStudents = visibleSchools.filter(school => school.NUM_ISCR > 0);
@@ -990,6 +1032,7 @@
             
             resultsHTML += schoolsToShow.map(school => `
                 <div class="school-card" onclick="focusSchoolOnMap(${school.LAT_Y_4326}, ${school.LONG_X_4326})">
+                    ${school.distance ? `<div class="distance-badge">${school.distance}m away</div>` : ''}
                     <div class="school-name">${school.DENOMINAZIONE}</div>
                     <div class="school-info">
                         <div class="info-item">
