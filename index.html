@@ -884,7 +884,6 @@
                         <p><strong>🏫 Type:</strong> ${formatSchoolType(school)}</p>
                         <p><strong>👥 Students:</strong> ${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</p>
                         <p><strong>📍 Address:</strong> ${school.INDIRIZZO}</p>
-                        <p><strong>🏛️ Area:</strong> ${school.NIL}</p>
                         <p><strong>🌍 Province:</strong> ${school.PROVINCIA}</p>
                     </div>
                 `);
@@ -992,10 +991,6 @@
                             <span class="info-label">👥 Students:</span>
                             <span class="student-count">${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">🏛️ Area:</span>
-                            <span>${school.NIL}</span>
-                        </div>
                     </div>
                 </div>
             `).join('');
@@ -1055,10 +1050,6 @@
                         <div class="info-item">
                             <span class="info-label">👥 Students:</span>
                             <span class="student-count">${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">🏛️ Area:</span>
-                            <span>${school.NIL}</span>
                         </div>
                     </div>
                 </div>
@@ -1124,7 +1115,6 @@
                         <p><strong>📍 Distance:</strong> ${school.distance}m</p>
                         <p><strong>👥 Students:</strong> ${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</p>
                         <p><strong>📍 Address:</strong> ${school.INDIRIZZO}</p>
-                        <p><strong>🏛️ Area:</strong> ${school.NIL}</p>
                         <p><strong>🌍 Province:</strong> ${school.PROVINCIA}</p>
                     </div>
                 `).addTo(markersGroup);
