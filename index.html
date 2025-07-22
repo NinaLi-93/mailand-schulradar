@@ -452,19 +452,28 @@
                         displayType = 'Scuola Primaria';
                         console.log('  → Classified as: SCUOLA PRIMARIA');
                     } else if (ordinescuola.includes('secondaria')) {
-                        if (ordinescuola.includes('ii') || ordinescuola.includes('secondo') || ordinescuola.includes('2')) {
+                        // IMPORTANT: Check for II FIRST, then I to avoid wrong classification
+                        if (ordinescuola.includes(' ii ') || ordinescuola.includes('ii grado') || ordinescuola.includes('secondo') || ordinescuola.includes(' 2 ') || ordinescuola.includes('2°')) {
                             schoolType = 'secondaria_ii';
                             displayType = 'Scuola Secondaria II Grado';
                             console.log('  → Classified as: SCUOLA SECONDARIA II GRADO');
-                        } else if (ordinescuola.includes('i ') || ordinescuola.includes('primo') || ordinescuola.includes('1') || ordinescuola.includes('grado')) {
+                        } else if (ordinescuola.includes(' i ') || ordinescuola.includes('i grado') || ordinescuola.includes('primo') || ordinescuola.includes(' 1 ') || ordinescuola.includes('1°')) {
                             schoolType = 'secondaria_i';
                             displayType = 'Scuola Secondaria I Grado';
                             console.log('  → Classified as: SCUOLA SECONDARIA I GRADO');
                         } else {
-                            // Default secondaria to II grado if unclear
-                            schoolType = 'secondaria_ii';
-                            displayType = 'Scuola Secondaria II Grado';
-                            console.log('  → Default classified as: SCUOLA SECONDARIA II GRADO');
+                            // If it just says "secondaria" without clear grade, try to infer from context
+                            // Most high schools are II grado, but let's be more specific
+                            const fullText = (school[typeField] || '').toLowerCase();
+                            if (fullText.includes('liceo') || fullText.includes('tecnico') || fullText.includes('professionale') || fullText.includes('istituto superiore')) {
+                                schoolType = 'secondaria_ii';
+                                displayType = 'Scuola Secondaria II Grado';
+                                console.log('  → Inferred as: SCUOLA SECONDARIA II GRADO (via keywords)');
+                            } else {
+                                schoolType = 'secondaria_i';
+                                displayType = 'Scuola Secondaria I Grado';
+                                console.log('  → Default classified as: SCUOLA SECONDARIA I GRADO');
+                            }
                         }
                     } else {
                         console.log(`  → NOT CLASSIFIED! Remaining as OTHER. Full text: "${school[typeField]}"`);
@@ -609,25 +618,35 @@
                     
                     console.log(`School: ${school.DENOMINAZIONEISTITUTORIFERIMENTO || school.DENOMINAZ || 'Unknown'}, ORDINESCUOLA: "${school.ORDINESCUOLA}" → "${ordinescuola}"`);
                     
-                    // Enhanced classification based on ORDINESCUOLA field
+                    // Enhanced classification - CRITICAL: Check II before I to avoid wrong classification
                     if (ordinescuola.includes('primaria')) {
                         schoolType = 'primaria';
                         displayType = 'Scuola Primaria';
                         console.log('  → Classified as: SCUOLA PRIMARIA');
                     } else if (ordinescuola.includes('secondaria')) {
-                        if (ordinescuola.includes('ii') || ordinescuola.includes('secondo') || ordinescuola.includes('2')) {
+                        // IMPORTANT: Check for II FIRST, then I to avoid wrong classification
+                        if (ordinescuola.includes(' ii ') || ordinescuola.includes('ii grado') || ordinescuola.includes('secondo') || ordinescuola.includes(' 2 ') || ordinescuola.includes('2°')) {
                             schoolType = 'secondaria_ii';
                             displayType = 'Scuola Secondaria II Grado';
                             console.log('  → Classified as: SCUOLA SECONDARIA II GRADO');
-                        } else if (ordinescuola.includes('i ') || ordinescuola.includes('primo') || ordinescuola.includes('1') || ordinescuola.includes('grado')) {
+                        } else if (ordinescuola.includes(' i ') || ordinescuola.includes('i grado') || ordinescuola.includes('primo') || ordinescuola.includes(' 1 ') || ordinescuola.includes('1°')) {
                             schoolType = 'secondaria_i';
                             displayType = 'Scuola Secondaria I Grado';
                             console.log('  → Classified as: SCUOLA SECONDARIA I GRADO');
                         } else {
-                            // Default secondaria to II grado if unclear
-                            schoolType = 'secondaria_ii';
-                            displayType = 'Scuola Secondaria II Grado';
-                            console.log('  → Default classified as: SCUOLA SECONDARIA II GRADO');
+                            // If it just says "secondaria" without clear grade, try to infer from context
+                            const fullText = (school.ORDINESCUOLA || '').toLowerCase();
+                            const schoolName = (school.DENOMINAZIONEISTITUTORIFERIMENTO || school.DENOMINAZ || '').toLowerCase();
+                            if (fullText.includes('liceo') || fullText.includes('tecnico') || fullText.includes('professionale') || 
+                                fullText.includes('istituto superiore') || schoolName.includes('liceo') || schoolName.includes('tecnico')) {
+                                schoolType = 'secondaria_ii';
+                                displayType = 'Scuola Secondaria II Grado';
+                                console.log('  → Inferred as: SCUOLA SECONDARIA II GRADO (via keywords)');
+                            } else {
+                                schoolType = 'secondaria_i';
+                                displayType = 'Scuola Secondaria I Grado';
+                                console.log('  → Default classified as: SCUOLA SECONDARIA I GRADO');
+                            }
                         }
                     } else {
                         console.log(`  → NOT CLASSIFIED! Remaining as OTHER. Full ORDINESCUOLA text: "${school.ORDINESCUOLA}"`);
