@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Milan School Finder</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
@@ -36,7 +39,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Raleway', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--gs-light-blue) 0%, #ffffff 100%);
             min-height: 100vh;
         }
@@ -203,15 +206,6 @@
             font-weight: 600;
             display: inline-block;
             margin-bottom: 10px;
-        }
-
-        .school-type {
-            background: var(--gs-yellow);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
         }
 
         .student-count {
@@ -1000,7 +994,7 @@
                     <div class="school-info">
                         <div class="info-item">
                             <span class="info-label">🏫 Type:</span>
-                            <span class="school-type">${formatSchoolType(school)}</span>
+                            <span>${formatSchoolType(school)}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">📍 Address:</span>
@@ -1060,7 +1054,7 @@
                     <div class="school-info">
                         <div class="info-item">
                             <span class="info-label">🏫 Type:</span>
-                            <span class="school-type">${formatSchoolType(school)}</span>
+                            <span>${formatSchoolType(school)}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">📍 Address:</span>
