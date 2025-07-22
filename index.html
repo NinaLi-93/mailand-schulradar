@@ -819,13 +819,15 @@
             
             // Add event listeners for map changes
             map.on('moveend', function() {
-                if (schoolsData && schoolsData.length > 0) {
+                // Only update visible schools if no address search is active
+                if (schoolsData && schoolsData.length > 0 && !userLocation) {
                     updateVisibleSchools();
                 }
             });
             
             map.on('zoomend', function() {
-                if (schoolsData && schoolsData.length > 0) {
+                // Only update visible schools if no address search is active
+                if (schoolsData && schoolsData.length > 0 && !userLocation) {
                     updateVisibleSchools();
                 }
             });
@@ -917,68 +919,26 @@
             }, 100);
         }
 
-        // Update visible schools based on current map view
+        // Update visible schools based on current map view (only for browsing mode)
         function updateVisibleSchools() {
             if (!map || !schoolsData || schoolsData.length === 0) return;
             
-            let schoolsToDisplay = [];
+            // Get current map bounds
+            const bounds = map.getBounds();
             
-            // If user has searched for an address, show only schools within radius
-            if (userLocation) {
-                const radius = parseInt(document.getElementById('radiusSelect').value);
-                
-                // Filter schools within the search radius
-                schoolsToDisplay = schoolsData.filter(school => {
-                    const distance = calculateDistance(
-                        userLocation.lat, userLocation.lon,
-                        school.LAT_Y_4326, school.LONG_X_4326
-                    );
-                    return distance <= radius;
-                }).map(school => {
-                    // Add distance to each school
-                    const distance = calculateDistance(
-                        userLocation.lat, userLocation.lon,
-                        school.LAT_Y_4326, school.LONG_X_4326
-                    );
-                    return {
-                        ...school,
-                        distance: Math.round(distance)
-                    };
-                });
-                
-                // Sort by distance
-                schoolsToDisplay.sort((a, b) => a.distance - b.distance);
-                
-            } else {
-                // No address search - show schools visible in current map view
-                const bounds = map.getBounds();
-                schoolsToDisplay = schoolsData.filter(school => 
-                    bounds.contains([school.LAT_Y_4326, school.LONG_X_4326])
-                );
-            }
+            // Filter schools that are visible in current view
+            const visibleSchools = schoolsData.filter(school => 
+                bounds.contains([school.LAT_Y_4326, school.LONG_X_4326])
+            );
             
-            // Update results display
-            displayVisibleSchools(schoolsToDisplay);
+            // Update results display (only for browsing mode)
+            displayVisibleSchools(visibleSchools);
         }
 
         // Display schools visible in current map view
         function displayVisibleSchools(visibleSchools) {
             const resultsContainer = document.getElementById('schoolResults');
             const statsContainer = document.getElementById('resultsStats');
-            
-            // Calculate distances if user location is available
-            if (userLocation) {
-                visibleSchools.forEach(school => {
-                    const distance = calculateDistance(
-                        userLocation.lat, userLocation.lon,
-                        school.LAT_Y_4326, school.LONG_X_4326
-                    );
-                    school.distance = Math.round(distance);
-                });
-                
-                // Sort by distance if user location is available
-                visibleSchools.sort((a, b) => a.distance - b.distance);
-            }
             
             // Calculate statistics for visible schools
             const schoolsWithStudents = visibleSchools.filter(school => school.NUM_ISCR > 0);
@@ -992,7 +952,17 @@
                 other: visibleSchools.filter(s => s.SCHOOL_TYPE === 'other').length
             };
             
-            let statsText = `📊 ${visibleSchools.length} schools in current view`;
+            // Different display text based on whether user has searched or not
+            let statsText = '';
+            if (userLocation) {
+                // User has searched for an address - show radius results
+                const radius = parseInt(document.getElementById('radiusSelect').value);
+                statsText = `📊 ${visibleSchools.length} schools within ${radius}m radius`;
+            } else {
+                // No address search - show current view
+                statsText = `📊 ${visibleSchools.length} schools in current view`;
+            }
+            
             if (schoolsWithStudents.length > 0) {
                 statsText += ` | 👥 ${totalStudents.toLocaleString()} total students`;
             }
@@ -1015,17 +985,25 @@
             
             let resultsHTML = '';
             if (visibleSchools.length > schoolsToShow.length) {
+                const contextText = userLocation ? 
+                    `Showing first ${schoolsToShow.length} of ${visibleSchools.length} schools in radius.` :
+                    `Showing first ${schoolsToShow.length} of ${visibleSchools.length} visible schools. Zoom in for more detail.`;
+                    
                 resultsHTML += `
                     <div style="background: var(--gs-light-blue); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                        <strong>📍 Schools in Current View</strong><br>
-                        Showing first ${schoolsToShow.length} of ${visibleSchools.length} visible schools. Zoom in for more detail.
+                        <strong>📍 Search Results</strong><br>
+                        ${contextText}
                     </div>
                 `;
             } else if (visibleSchools.length === 0) {
+                const noResultsText = userLocation ? 
+                    `No schools found within the selected radius. Try increasing the radius or searching a different location.` :
+                    `Zoom out or pan the map to see schools. All ${schoolsData.length} schools are available on the map.`;
+                    
                 resultsHTML += `
                     <div style="background: var(--gs-light-blue); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                        <strong>🔍 No Schools in Current View</strong><br>
-                        Zoom out or pan the map to see schools. All ${schoolsData.length} schools are available on the map.
+                        <strong>🔍 No Schools Found</strong><br>
+                        ${noResultsText}
                     </div>
                 `;
             }
@@ -1233,6 +1211,7 @@
             
             // If address is empty, show all schools
             if (!address) {
+                userLocation = null;
                 showAllSchoolsOnMap();
                 updateVisibleSchools();
                 return;
@@ -1255,7 +1234,7 @@
             userLocation = location;
             showStatus('📊 Calculating distances to schools...');
             
-            // Find nearby schools
+            // Find nearby schools within radius
             const nearbySchools = [];
             
             for (const school of schoolsData) {
@@ -1275,12 +1254,79 @@
             // Sort by distance
             nearbySchools.sort((a, b) => a.distance - b.distance);
             
-            // Display results
+            // Display results - use dedicated search results display
             document.getElementById('statusMessage').innerHTML = '';
             document.getElementById('mainContent').style.display = 'grid';
             
-            displayResults(nearbySchools);
+            displaySearchResults(nearbySchools, radius);
             addMarkersToMap(nearbySchools, location.lat, location.lon);
+        }
+
+        // Separate function for search results (within radius)
+        function displaySearchResults(nearbySchools, radius) {
+            const resultsContainer = document.getElementById('schoolResults');
+            const statsContainer = document.getElementById('resultsStats');
+            
+            // Calculate total students
+            const schoolsWithStudents = nearbySchools.filter(school => school.NUM_ISCR > 0);
+            const totalStudents = schoolsWithStudents.reduce((sum, school) => sum + school.NUM_ISCR, 0);
+            
+            // Count by type for analysis
+            const typeCount = {
+                primaria: nearbySchools.filter(s => s.SCHOOL_TYPE === 'primaria').length,
+                secondaria_i: nearbySchools.filter(s => s.SCHOOL_TYPE === 'secondaria_i').length,
+                secondaria_ii: nearbySchools.filter(s => s.SCHOOL_TYPE === 'secondaria_ii').length,
+                other: nearbySchools.filter(s => s.SCHOOL_TYPE === 'other').length
+            };
+            
+            let statsText = `📊 ${nearbySchools.length} schools within ${radius}m radius`;
+            if (schoolsWithStudents.length > 0) {
+                statsText += ` | 👥 ${totalStudents.toLocaleString()} total students`;
+            }
+            
+            // Add type breakdown for area analysis
+            const typeBreakdown = [];
+            if (typeCount.primaria > 0) typeBreakdown.push(`🔵 ${typeCount.primaria} Primaria`);
+            if (typeCount.secondaria_i > 0) typeBreakdown.push(`🟣 ${typeCount.secondaria_i} Sec. I Grado`);
+            if (typeCount.secondaria_ii > 0) typeBreakdown.push(`🟢 ${typeCount.secondaria_ii} Sec. II Grado`);
+            if (typeCount.other > 0) typeBreakdown.push(`🔴 ${typeCount.other} Other`);
+            
+            if (typeBreakdown.length > 0) {
+                statsText += ` | ${typeBreakdown.join(', ')}`;
+            }
+            
+            statsContainer.innerHTML = `<div class="stats">${statsText}</div>`;
+            
+            // School cards - only schools within radius
+            if (nearbySchools.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div style="background: var(--gs-light-blue); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <strong>🔍 No Schools Found</strong><br>
+                        No schools found within ${radius}m radius. Try increasing the radius or searching a different location.
+                    </div>
+                `;
+            } else {
+                resultsContainer.innerHTML = nearbySchools.map(school => `
+                    <div class="school-card" onclick="focusSchoolOnMap(${school.LAT_Y_4326}, ${school.LONG_X_4326})">
+                        <div class="distance-badge">${school.distance}m away</div>
+                        <div class="school-name">${school.DENOMINAZIONE}</div>
+                        <div class="school-info">
+                            <div class="info-item">
+                                <span class="info-label">🏫 Type:</span>
+                                <span>${formatSchoolType(school)}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">📍 Address:</span>
+                                <span>${school.INDIRIZZO}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">👥 Students:</span>
+                                <span class="student-count">${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
         }
 
         // Watch address input for changes
@@ -1291,8 +1337,9 @@
             addressInput.addEventListener('input', function() {
                 const address = this.value.trim();
                 
-                // If address is cleared, return to all schools view
+                // If address is cleared, reset to all schools view
                 if (!address) {
+                    userLocation = null; // Clear user location
                     showAllSchoolsOnMap();
                     updateVisibleSchools();
                 }
@@ -1302,6 +1349,7 @@
             addressInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     this.value = '';
+                    userLocation = null; // Clear user location
                     showAllSchoolsOnMap();
                     updateVisibleSchools();
                 }
@@ -1312,6 +1360,38 @@
         document.getElementById('searchForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             await performSearch();
+        });
+
+        // Listen for radius changes to update results if address is already searched
+        document.getElementById('radiusSelect').addEventListener('change', function() {
+            if (userLocation) {
+                // If user has already searched, recalculate with new radius
+                const radius = parseInt(this.value);
+                
+                // Find nearby schools within new radius
+                const nearbySchools = [];
+                
+                for (const school of schoolsData) {
+                    const distance = calculateDistance(
+                        userLocation.lat, userLocation.lon,
+                        school.LAT_Y_4326, school.LONG_X_4326
+                    );
+                    
+                    if (distance <= radius) {
+                        nearbySchools.push({
+                            ...school,
+                            distance: Math.round(distance)
+                        });
+                    }
+                }
+                
+                // Sort by distance
+                nearbySchools.sort((a, b) => a.distance - b.distance);
+                
+                // Update display and map
+                displaySearchResults(nearbySchools, radius);
+                addMarkersToMap(nearbySchools, userLocation.lat, userLocation.lon);
+            }
         });
 
         // On page load
