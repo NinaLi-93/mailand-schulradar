@@ -1,25 +1,9 @@
-<div class="container">
-        <div class="header">
-            <div class="header-content">
-                <h1>🏫 Sicily School Finder</h1>
-                <p style="opacity: 0.9;">Find schools in Sicily with detailed map and information</p>
-            </div>
-            <div class="logo-container">
-                <img src="https://raw.githubusercontent.com/NinaLi-93/mailand-schulradar/main/GS_Logo_wei%C3%9F.png" alt="GoStudent Logo">
-            </div>
-        </div>    <script>
-        // ============================================
-        // FIRMENEIGENE ICONS - Bitte URLs hier eintragen
-        // ============================================
-        const ICONS = {
-            school: '🏫',  // Ersetzen durch: 'https://raw.githubusercontent.com/IhrRepo/icons/school.svg'
-            students: '👥', // Ersetzen durch: 'https://raw.githubusercontent.com/IhrRepo/icons/students.svg'
-            address: '<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sicily School Finder</title>
+    <title>Milan School Finder</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
+        /* Fix Leaflet marker icons */
         .leaflet-default-icon-path {
             background-image: url('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png');
         }
@@ -72,33 +57,12 @@
             border-radius: 15px;
             margin-bottom: 20px;
             box-shadow: 0 8px 32px rgba(9, 47, 172, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .header-content {
-            flex: 1;
-            text-align: center;
         }
 
         .header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-container img {
-            height: 45px;
-            width: auto;
-            background: white;
-            padding: 8px 12px;
-            border-radius: 8px;
+            text-align: center;
         }
 
         .search-section {
@@ -216,22 +180,16 @@
 
         .school-info {
             display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 10px 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
             margin-top: 12px;
         }
 
         .info-item {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 8px;
             font-size: 0.9rem;
-            white-space: nowrap;
-        }
-        
-        .info-item span:not(.info-label):not(.student-count) {
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .info-label {
@@ -334,37 +292,22 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="header-content">
-                <h1>🏫 Sicily School Finder</h1>
-                <p style="opacity: 0.9;">Find schools in Sicily with detailed map and information</p>
-            </div>
-            <div class="logo-container">
-                <img src="https://assets.gostudent.org/f/192322/161627b59d/logo.svg" alt="GoStudent Logo">
-            </div>
+            <h1>🏫 Milan School Finder</h1>
+            <p style="text-align: center; opacity: 0.9;">Find schools near you with detailed map and information</p>
         </div>
 
         <div class="search-section">
-            <div id="uploadFallback" style="display: none; background: #fff3cd; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #ffc107;">
-                <strong>⚠️ Automatic loading failed.</strong>
-                <p style="margin: 10px 0;">Please load the CSV file manually:</p>
-                <input type="file" id="csvFileInput" accept=".csv" style="margin: 10px 10px 0 0; padding: 8px;">
-                <button onclick="loadLocalCSV()" class="search-btn" style="margin-top: 10px;">Load CSV File</button>
-                <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">
-                    Download: <a href="https://raw.githubusercontent.com/NinaLi-93/sicily-schoolradar/main/sicily-schooldata.csv" download style="color: var(--gs-dark-blue); font-weight: 600;">sicily-schooldata.csv</a>
-                </p>
-            </div>
             <form class="search-form" id="searchForm">
                 <input 
                     type="text" 
                     id="addressInput" 
                     class="search-input" 
-                    placeholder="Optional: Enter address in Sicily (e.g. Via Roma 1, Palermo)"
+                    placeholder="Optional: Enter address in Milan to find nearby schools (e.g. Via Brera 28, Milano)"
                 >
                 <div class="radius-selector">
                     <label for="radiusSelect">Radius:</label>
                     <select id="radiusSelect">
                         <option value="500">500m</option>
-                        <option value="750">750m</option>
                         <option value="1000" selected>1km</option>
                         <option value="1500">1.5km</option>
                         <option value="2000">2km</option>
@@ -391,15 +334,15 @@
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: #092FAC;"></div>
-                        <span>Primary Schools</span>
+                        <span>Scuola Primaria</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: #9F80FF;"></div>
-                        <span>Middle Schools</span>
+                        <span>Scuola Secondaria I Grado</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: #5DC18B;"></div>
-                        <span>High Schools</span>
+                        <span>Scuola Secondaria II Grado</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: #FF6B4A;"></div>
@@ -414,146 +357,56 @@
     </div>
 
     <script>
-        // ============================================
-        // FIRMENEIGENE ICONS - Bitte URLs hier eintragen
-        // ============================================
-        const ICONS = {
-            school: '🏫',  // Ersetzen durch: 'https://raw.githubusercontent.com/IhrRepo/icons/school.svg'
-            students: '👥', // Ersetzen durch: 'https://raw.githubusercontent.com/IhrRepo/icons/students.svg'
-            address: '📍',  // Ersetzen durch: 'https://raw.githubusercontent.com/IhrRepo/icons/address.svg'
-            city: '🏙️',    // Ersetzen durch: 'https://raw.githubusercontent.com/IhrRepo/icons/city.svg'
-            distance: '📏', // Ersetzen durch: 'https://raw.githubusercontent.com/IhrRepo/icons/distance.svg'
-            search: '🔍'    // Ersetzen durch: 'https://raw.githubusercontent.com/IhrRepo/icons/search.svg'
-        };
-        
-        // Hilfsfunktion um Icon darzustellen (Emoji oder SVG)
-        function getIcon(iconKey) {
-            const icon = ICONS[iconKey];
-            if (icon.startsWith('http')) {
-                return `<img src="${icon}" alt="${iconKey}" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;">`;
-            }
-            return icon;
-        }
-        // ============================================
-        
         let map = null;
         let schoolsData = [];
         let userLocation = null;
         let markersGroup = null;
 
-        // GitHub CSV URL
-        const GITHUB_CSV_URL = 'https://raw.githubusercontent.com/NinaLi-93/sicily-schoolradar/main/sicily-schooldata.csv';
-
-        // Load CSV from GitHub automatically
-        async function loadFromGitHub() {
+        // Load school data with better debugging
+        async function loadSchoolData() {
+            const githubURL = 'https://raw.githubusercontent.com/NinaLi-93/mailand-schulradar/main/Milan_Schooldata.csv';
+            
             try {
                 showStatus('📚 Loading school data from GitHub...');
-                console.log('Attempting to load from:', GITHUB_CSV_URL);
                 
-                let csvData;
-                
-                // Try direct fetch first
-                try {
-                    const response = await fetch(GITHUB_CSV_URL);
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
-                    }
-                    csvData = await response.text();
-                    console.log('✅ Direct GitHub fetch successful');
-                } catch (directError) {
-                    console.log('Direct fetch failed, trying CORS proxy...', directError);
-                    
-                    // Try with CORS proxy
-                    const corsProxy = 'https://corsproxy.io/?' + encodeURIComponent(GITHUB_CSV_URL);
-                    const response = await fetch(corsProxy);
-                    if (!response.ok) {
-                        throw new Error(`Proxy failed: HTTP ${response.status}`);
-                    }
-                    csvData = await response.text();
-                    console.log('✅ CORS proxy fetch successful');
+                const response = await fetch(githubURL);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
                 
-                // Process the CSV data
-                return processCSVData(csvData);
-                
-            } catch (error) {
-                console.error('Failed to load from GitHub:', error);
-                // Show upload fallback
-                document.getElementById('uploadFallback').style.display = 'block';
-                showError('Could not load data from GitHub. Please use the manual upload option above.');
-                return false;
-            }
-        }
-
-        // Load CSV from local file upload
-        function loadLocalCSV() {
-            const fileInput = document.getElementById('csvFileInput');
-            const file = fileInput.files[0];
-            
-            if (!file) {
-                showError('Please select a CSV file first!');
-                return;
-            }
-            
-            showStatus('📚 Loading CSV file...');
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const csvData = e.target.result;
-                processCSVData(csvData);
-            };
-            reader.onerror = function() {
-                showError('Error reading file. Please try again.');
-            };
-            reader.readAsText(file);
-        }
-
-        // Process CSV data
-        function processCSVData(csvData) {
-            try {
-                console.log('📄 CSV data loaded, size:', csvData.length, 'characters');
-                console.log('First 500 characters:', csvData.substring(0, 500));
+                const csvData = await response.text();
+                console.log('📄 Raw CSV data sample:', csvData.substring(0, 500));
                 
                 const parsedData = Papa.parse(csvData, {
                     header: true,
                     dynamicTyping: true,
                     skipEmptyLines: true,
-                    delimiter: ',',
                     delimitersToGuess: [',', ';', '\t']
                 });
                 
-                console.log(`📊 ${parsedData.data.length} rows loaded from CSV`);
-                console.log(`🔍 CSV columns:`, parsedData.meta.fields);
+                console.log(`📊 Raw data: ${parsedData.data.length} rows loaded from GitHub`);
+                console.log(`🔍 CSV Headers:`, parsedData.meta.fields);
                 console.log(`🔍 First 3 rows:`, parsedData.data.slice(0, 3));
                 
-                // Detect field names based on actual CSV structure
+                // Try different possible field names for coordinates
                 let latField = null;
                 let lonField = null;
                 let nameField = null;
                 let addressField = null;
-                let cityField = null;
                 let totalField = null;
                 let typeField = null;
                 
                 const fields = parsedData.meta.fields || [];
                 
+                // Find coordinate fields
                 for (let field of fields) {
-                    const lowerField = (field || '').toLowerCase().trim();
-                    
-                    // Latitude
-                    if (lowerField === 'latitude' || lowerField.includes('latitud')) latField = field;
-                    // Longitude  
-                    if (lowerField === 'longitude' || lowerField.includes('longitud')) lonField = field;
-                    // Name - Denominazione
-                    if (lowerField === 'denominazione' || lowerField.includes('denominazion')) nameField = field;
-                    // Address - Indirizzo (only street address)
-                    if (lowerField === 'indirizzo' || lowerField.includes('indirizzo')) addressField = field;
-                    // City - Comune
-                    if (lowerField === 'comune' || lowerField.includes('comune')) cityField = field;
-                    // Student count - "All Students"
-                    if (lowerField === 'all students' || lowerField.includes('all students') || lowerField.includes('students')) totalField = field;
-                    // School type - "School Type"
-                    if (lowerField === 'school type' || lowerField === 'school_type' || lowerField.includes('school') && lowerField.includes('type')) typeField = field;
+                    if (field && field.toLowerCase().includes('lat')) latField = field;
+                    if (field && field.toLowerCase().includes('long')) lonField = field;
+                    if (field && field.toLowerCase().includes('denominazioneistitutoriferimento')) nameField = field;
+                    if (field && field.toLowerCase().includes('denominaz') && !nameField) nameField = field;
+                    if (field && field.toLowerCase().includes('indirizzo')) addressField = field;
+                    if (field && (field.toLowerCase() === 'total' || field.toLowerCase().includes('alunni'))) totalField = field;
+                    if (field && field.toLowerCase().includes('ordinescuola')) typeField = field;
                 }
                 
                 console.log('🗺️ Detected fields:', {
@@ -561,60 +414,94 @@
                     lon: lonField,
                     name: nameField,
                     address: addressField,
-                    city: cityField,
                     total: totalField,
                     type: typeField
                 });
                 
-                // Filter and process schools
+                // Filter and map schools with detected field names
                 schoolsData = parsedData.data.filter(school => {
                     const lat = school[latField];
                     const lon = school[lonField];
-                    return lat && lon && !isNaN(parseFloat(lat)) && !isNaN(parseFloat(lon));
-                }).map(school => {
-                    // Determine school type from School Type column
-                    let schoolType = 'other';
-                    let displayType = 'Other Schools';
-                    const typeValue = (school[typeField] || '').toLowerCase().trim();
+                    const hasCoords = lat && lon && !isNaN(parseFloat(lat)) && !isNaN(parseFloat(lon));
                     
-                    console.log(`Processing school: ${school[nameField]}, School Type: "${school[typeField]}"`);
-                    
-                    // Check for your actual CSV values: "prim", "sec i", "sec ii"
-                    if (typeValue === 'prim' || typeValue.includes('prim')) {
-                        schoolType = 'primaria';
-                        displayType = 'Primary School';
-                    } else if (typeValue.includes('sec')) {
-                        // Check if it's "sec ii" or just "sec i"
-                        if (typeValue.includes('ii') || typeValue.includes(' 2') || typeValue === 'sec ii') {
-                            schoolType = 'secondaria_ii';
-                            displayType = 'High School';
-                        } else if (typeValue.includes(' i') || typeValue.includes(' 1') || typeValue === 'sec i') {
-                            schoolType = 'secondaria_i';
-                            displayType = 'Middle School';
-                        }
+                    if (!hasCoords && parsedData.data.indexOf(school) < 5) {
+                        console.log(`❌ Invalid coordinates for school:`, {
+                            name: school[nameField],
+                            lat: lat,
+                            lon: lon
+                        });
                     }
                     
-                    // Student count from "All Students" column
+                    return hasCoords;
+                }).map(school => {
+                    // Determine school type from ORDINESCUOLA field
+                    let schoolType = 'other';
+                    let displayType = 'Other Schools';
+                    const ordinescuola = (school[typeField] || '').toLowerCase().trim();
+                    
+                    console.log(`Processing school: ${school[nameField]}, ORDINESCUOLA: "${school[typeField]}" → normalized: "${ordinescuola}"`);
+                    
+                    if (ordinescuola.includes('primaria')) {
+                        schoolType = 'primaria';
+                        displayType = 'Scuola Primaria';
+                        console.log('  → Classified as: SCUOLA PRIMARIA');
+                    } else if (ordinescuola.includes('secondaria')) {
+                        // IMPORTANT: Check for II FIRST, then I to avoid wrong classification
+                        if (ordinescuola.includes(' ii ') || ordinescuola.includes('ii grado') || ordinescuola.includes('secondo') || ordinescuola.includes(' 2 ') || ordinescuola.includes('2°')) {
+                            schoolType = 'secondaria_ii';
+                            displayType = 'Scuola Secondaria II Grado';
+                            console.log('  → Classified as: SCUOLA SECONDARIA II GRADO');
+                        } else if (ordinescuola.includes(' i ') || ordinescuola.includes('i grado') || ordinescuola.includes('primo') || ordinescuola.includes(' 1 ') || ordinescuola.includes('1°')) {
+                            schoolType = 'secondaria_i';
+                            displayType = 'Scuola Secondaria I Grado';
+                            console.log('  → Classified as: SCUOLA SECONDARIA I GRADO');
+                        } else {
+                            // If it just says "secondaria" without clear grade, try to infer from context
+                            // Most high schools are II grado, but let's be more specific
+                            const fullText = (school[typeField] || '').toLowerCase();
+                            if (fullText.includes('liceo') || fullText.includes('tecnico') || fullText.includes('professionale') || fullText.includes('istituto superiore')) {
+                                schoolType = 'secondaria_ii';
+                                displayType = 'Scuola Secondaria II Grado';
+                                console.log('  → Inferred as: SCUOLA SECONDARIA II GRADO (via keywords)');
+                            } else {
+                                schoolType = 'secondaria_i';
+                                displayType = 'Scuola Secondaria I Grado';
+                                console.log('  → Default classified as: SCUOLA SECONDARIA I GRADO');
+                            }
+                        }
+                    } else {
+                        console.log(`  → NOT CLASSIFIED! Remaining as OTHER. Full text: "${school[typeField]}"`);
+                    }
+                    
+                    // Handle student numbers
                     let studentCount = 0;
                     if (school[totalField] && !isNaN(parseInt(school[totalField]))) {
                         const value = parseInt(school[totalField]);
-                        if (value > 0 && value < 10000) {
+                        if (value > 0 && value < 5000) {
                             studentCount = value;
                         }
                     }
                     
-                    return {
+                    const processedSchool = {
                         DENOMINAZIONE: school[nameField] || 'Unknown School',
                         INDIRIZZO: school[addressField] || 'Address not available',
-                        COMUNE: school[cityField] || 'Unknown',
                         LAT_Y_4326: parseFloat(school[latField]),
                         LONG_X_4326: parseFloat(school[lonField]),
                         NUM_ISCR: studentCount,
                         SCHOOL_TYPE: schoolType,
                         SCHOOL_TYPE_DISPLAY: displayType,
-                        TYPE_ORIGINAL: school[typeField] || '',
+                        ORDINESCUOLA: school[typeField] || '',
+                        NIL: school.AREAGEOGRAFICA || 'Not available',
+                        PROVINCIA: school.PROVINCIA || '',
                         _original: school
                     };
+                    
+                    // Log first few schools for debugging
+                    if (schoolsData.length < 3) {
+                        console.log(`🏫 Processed school ${schoolsData.length + 1}:`, processedSchool);
+                    }
+                    
+                    return processedSchool;
                 });
                 
                 console.log(`✅ ${schoolsData.length} schools with valid coordinates processed`);
@@ -623,6 +510,19 @@
                     throw new Error('No schools with valid coordinates found');
                 }
                 
+                // Calculate bounds of all schools
+                const lats = schoolsData.map(s => s.LAT_Y_4326);
+                const lons = schoolsData.map(s => s.LONG_X_4326);
+                const bounds = {
+                    minLat: Math.min(...lats),
+                    maxLat: Math.max(...lats),
+                    minLon: Math.min(...lons),
+                    maxLon: Math.max(...lons)
+                };
+                
+                console.log(`🗺️ School coordinate bounds:`, bounds);
+                
+                // Count by school type
                 const typeCount = {
                     primaria: schoolsData.filter(s => s.SCHOOL_TYPE === 'primaria').length,
                     secondaria_i: schoolsData.filter(s => s.SCHOOL_TYPE === 'secondaria_i').length,
@@ -630,34 +530,233 @@
                     other: schoolsData.filter(s => s.SCHOOL_TYPE === 'other').length
                 };
                 
-                console.log(`📚 School types:`, typeCount);
+                const schoolsWithStudents = schoolsData.filter(s => s.NUM_ISCR > 0);
+                const totalStudents = schoolsWithStudents.reduce((sum, s) => sum + s.NUM_ISCR, 0);
                 
+                console.log(`🎉 SUCCESS: ${schoolsData.length} schools loaded!`);
+                console.log(`📚 School types:`, typeCount);
+                console.log(`👥 Student data: ${schoolsWithStudents.length} schools with student counts, ${totalStudents} total students`);
+                
+                // Show all schools on map immediately but DON'T change map position
                 showAllSchoolsOnMap();
                 
+                // DON'T fit bounds on initial load - keep map centered on Milan Centro
+                // Only update visible schools display
                 setTimeout(() => {
                     updateVisibleSchools();
                 }, 500);
                 
-                document.getElementById('statusMessage').innerHTML = '';
-                showStatus(`✅ ${schoolsData.length} schools loaded! All schools visible.`);
-                setTimeout(() => {
-                    document.getElementById('statusMessage').innerHTML = '';
-                }, 3000);
-                
-                watchAddressInput();
-                
                 return true;
                 
             } catch (error) {
-                console.error('Error processing school data:', error);
-                showError('Error processing school data: ' + error.message);
+                console.error('Error loading school data from GitHub:', error);
+                showError('Failed to load school data from GitHub. Please check your internet connection.');
+                return false;
+            }
+        }
+
+        // Load from correct Milano API - Using the right resource_id from screenshot
+        async function loadSchoolDataFromMilanoAPI() {
+            const milanoAPI = {
+                name: 'Milan Schools (Correct API)',
+                url: 'https://dati.comune.milano.it/api/3/action/datastore_search?resource_id=20e2f522-3112-4fa3-989c-0cc77a85cfc5&limit=1000',
+                type: 'schools'
+            };
+            
+            try {
+                console.log(`🔄 Loading from ${milanoAPI.name}...`);
+                showStatus(`📚 Loading ${milanoAPI.name}...`);
+                
+                // Try direct first, then CORS proxy
+                let response;
+                let method = 'Direct';
+                
+                try {
+                    response = await fetch(milanoAPI.url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                } catch (directError) {
+                    console.log(`   📡 Direct failed, trying CORS proxy...`);
+                    method = 'Proxy';
+                    const corsProxy = 'https://corsproxy.io/?' + encodeURIComponent(milanoAPI.url);
+                    response = await fetch(corsProxy);
+                    if (!response.ok) throw new Error(`Proxy HTTP ${response.status}`);
+                }
+                
+                const apiData = await response.json();
+                
+                if (!apiData.success || !apiData.result || !apiData.result.records) {
+                    throw new Error('Invalid response format');
+                }
+                
+                console.log(`📊 Raw data: ${apiData.result.records.length} schools received`);
+                console.log(`🔍 Available fields:`, Object.keys(apiData.result.records[0] || {}));
+                console.log(`🔍 Sample school data:`, apiData.result.records[0]);
+                
+                let schools = apiData.result.records;
+                
+                // Filter schools with valid coordinates
+                schools = schools.filter(school => {
+                    return school.LAT_Y_4326 && school.LONG_X_4326 && 
+                           !isNaN(parseFloat(school.LAT_Y_4326)) && 
+                           !isNaN(parseFloat(school.LONG_X_4326));
+                });
+                
+                console.log(`📍 After coordinate filter: ${schools.length} schools with valid coordinates`);
+                
+                // Transform data
+                schools = schools.map((school, index) => {
+                    // Determine school type from ORDINESCUOLA field
+                    let schoolType = 'other';
+                    let displayType = 'Other Schools';
+                    const ordinescuola = (school.ORDINESCUOLA || '').toLowerCase().trim();
+                    
+                    console.log(`School: ${school.DENOMINAZIONEISTITUTORIFERIMENTO || school.DENOMINAZ || 'Unknown'}, ORDINESCUOLA: "${school.ORDINESCUOLA}" → "${ordinescuola}"`);
+                    
+                    // Enhanced classification - CRITICAL: Check II before I to avoid wrong classification
+                    if (ordinescuola.includes('primaria')) {
+                        schoolType = 'primaria';
+                        displayType = 'Scuola Primaria';
+                        console.log('  → Classified as: SCUOLA PRIMARIA');
+                    } else if (ordinescuola.includes('secondaria')) {
+                        // IMPORTANT: Check for II FIRST, then I to avoid wrong classification
+                        if (ordinescuola.includes(' ii ') || ordinescuola.includes('ii grado') || ordinescuola.includes('secondo') || ordinescuola.includes(' 2 ') || ordinescuola.includes('2°')) {
+                            schoolType = 'secondaria_ii';
+                            displayType = 'Scuola Secondaria II Grado';
+                            console.log('  → Classified as: SCUOLA SECONDARIA II GRADO');
+                        } else if (ordinescuola.includes(' i ') || ordinescuola.includes('i grado') || ordinescuola.includes('primo') || ordinescuola.includes(' 1 ') || ordinescuola.includes('1°')) {
+                            schoolType = 'secondaria_i';
+                            displayType = 'Scuola Secondaria I Grado';
+                            console.log('  → Classified as: SCUOLA SECONDARIA I GRADO');
+                        } else {
+                            // If it just says "secondaria" without clear grade, try to infer from context
+                            const fullText = (school.ORDINESCUOLA || '').toLowerCase();
+                            const schoolName = (school.DENOMINAZIONEISTITUTORIFERIMENTO || school.DENOMINAZ || '').toLowerCase();
+                            if (fullText.includes('liceo') || fullText.includes('tecnico') || fullText.includes('professionale') || 
+                                fullText.includes('istituto superiore') || schoolName.includes('liceo') || schoolName.includes('tecnico')) {
+                                schoolType = 'secondaria_ii';
+                                displayType = 'Scuola Secondaria II Grado';
+                                console.log('  → Inferred as: SCUOLA SECONDARIA II GRADO (via keywords)');
+                            } else {
+                                schoolType = 'secondaria_i';
+                                displayType = 'Scuola Secondaria I Grado';
+                                console.log('  → Default classified as: SCUOLA SECONDARIA I GRADO');
+                            }
+                        }
+                    } else {
+                        console.log(`  → NOT CLASSIFIED! Remaining as OTHER. Full ORDINESCUOLA text: "${school.ORDINESCUOLA}"`);
+                    }
+                    
+                    // Handle student numbers - try multiple possible field names
+                    let studentCount = 0;
+                    const possibleStudentFields = [
+                        'NUM_ISCR', 'ISCRITTI', 'ALUNNI', 'STUDENTI', 'TOTALE', 
+                        'Iscritti', 'Alunni', 'Studenti', 'Totale', 'N_STUDENTI'
+                    ];
+                    
+                    for (const field of possibleStudentFields) {
+                        if (school[field] && !isNaN(parseInt(school[field]))) {
+                            const value = parseInt(school[field]);
+                            if (value > 0 && value < 5000) { // Reasonable range
+                                studentCount = value;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // Log student data for first few schools
+                    if (index < 3) {
+                        console.log(`🔢 School ${index + 1} (${school.DENOMINAZIONEISTITUTORIFERIMENTO || school.DENOMINAZ || 'Unknown'}):`);
+                        console.log('   Available numeric fields:', 
+                            Object.keys(school).filter(key => !isNaN(parseInt(school[key])) && school[key] !== null)
+                                .map(key => `${key}:${school[key]}`));
+                        console.log(`   Student count found: ${studentCount}`);
+                    }
+                    
+                    return {
+                        ...school,
+                        LAT_Y_4326: parseFloat(school.LAT_Y_4326),
+                        LONG_X_4326: parseFloat(school.LONG_X_4326),
+                        NUM_ISCR: studentCount,
+                        SCHOOL_TYPE: schoolType,
+                        SCHOOL_TYPE_DISPLAY: displayType,
+                        API_SOURCE: milanoAPI.name,
+                        LOAD_METHOD: method,
+                        // Use DENOMINAZIONEISTITUTORIFERIMENTO as primary name field
+                        DENOMINAZIONE: school.DENOMINAZIONEISTITUTORIFERIMENTO || school.DENOMINAZ || school.DENOMINAZIONE || school.NOME || school.NAME || 'Unknown School',
+                        INDIRIZZO: school.INDIRIZZO || school.VIA || school.STRADA || school.ADDRESS || 'Address not available'
+                    };
+                });
+                
+                if (schools.length > 0) {
+                    schoolsData = schools;
+                    
+                    // Count schools by type
+                    const typeCount = {
+                        primaria: schools.filter(s => s.SCHOOL_TYPE === 'primaria').length,
+                        secondaria_i: schools.filter(s => s.SCHOOL_TYPE === 'secondaria_i').length,
+                        secondaria_ii: schools.filter(s => s.SCHOOL_TYPE === 'secondaria_ii').length,
+                        other: schools.filter(s => s.SCHOOL_TYPE === 'other').length
+                    };
+                    
+                    const schoolsWithStudents = schools.filter(s => s.NUM_ISCR > 0);
+                    const totalStudents = schoolsWithStudents.reduce((sum, s) => sum + s.NUM_ISCR, 0);
+                    
+                    console.log(`🎉 SUCCESS: ${schools.length} schools loaded from correct Milano API!`);
+                    console.log(`📚 School types:`, typeCount);
+                    console.log(`👥 Student data: ${schoolsWithStudents.length} schools with student counts, ${totalStudents} total students`);
+                    
+                    return true;
+                } else {
+                    console.error('❌ No valid schools found');
+                    return false;
+                }
+                
+            } catch (error) {
+                console.warn(`❌ Failed to load from Milano API:`, error);
+                return false;
+            }
+        }
+
+        // Backup function to load from GitHub if API fails
+        async function loadSchoolDataFromGitHub() {
+            const githubURL = 'https://raw.githubusercontent.com/NinaLi-93/mailand-schulradar/main/Mailand_Schooldata.csv';
+            
+            try {
+                showStatus('📚 Loading school data from GitHub backup...');
+                
+                const response = await fetch(githubURL);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const csvData = await response.text();
+                
+                const parsedData = Papa.parse(csvData, {
+                    header: true,
+                    dynamicTyping: true,
+                    skipEmptyLines: true,
+                    delimitersToGuess: [',', ';', '\t']
+                });
+                
+                // Filter schools with valid coordinates
+                schoolsData = parsedData.data.filter(school => 
+                    school.LAT_Y_4326 && school.LONG_X_4326 && 
+                    !isNaN(school.LAT_Y_4326) && !isNaN(school.LONG_X_4326)
+                );
+                
+                console.log(`${schoolsData.length} schools loaded from GitHub backup`);
+                return true;
+                
+            } catch (error) {
+                console.error('Error loading school data from GitHub:', error);
+                showError(`Failed to load school data from both Milan API and GitHub backup.`);
                 return false;
             }
         }
 
         // Haversine formula for distance calculation
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371e3;
+            const R = 6371e3; // Earth's radius in meters
             const φ1 = lat1 * Math.PI/180;
             const φ2 = lat2 * Math.PI/180;
             const Δφ = (lat2-lat1) * Math.PI/180;
@@ -671,10 +770,10 @@
             return R * c;
         }
 
-        // Address to coordinates
+        // Address to coordinates (Nominatim OpenStreetMap)
         async function geocodeAddress(address) {
-            const encodedAddress = encodeURIComponent(address + ', Sicilia, Italia');
-            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodedAddress}&limit=1&bounded=1&viewbox=12.4,38.8,15.7,36.6`;
+            const encodedAddress = encodeURIComponent(address);
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodedAddress}&limit=1&bounded=1&viewbox=8.9,45.6,9.3,45.3`;
             
             try {
                 const response = await fetch(url);
@@ -694,13 +793,14 @@
             }
         }
 
-        // Initialize map centered on Palermo
+        // Initialize map centered on Milan Centro (Piazza del Duomo)
         function initMap() {
             if (map) {
                 map.remove();
             }
             
-            map = L.map('map').setView([38.1157, 13.3615], 10);
+            // Center precisely on Milan's Centro - Piazza del Duomo
+            map = L.map('map').setView([45.4641, 9.1900], 14); // Higher zoom for better view of centro
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors',
@@ -709,6 +809,7 @@
 
             markersGroup = L.layerGroup().addTo(map);
             
+            // Fix for Leaflet marker icon issue
             delete L.Icon.Default.prototype._getIconUrl;
             L.Icon.Default.mergeOptions({
                 iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
@@ -716,57 +817,72 @@
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png'
             });
             
+            // Add event listeners for map changes
             map.on('moveend', function() {
+                // Only update visible schools if no address search is active
                 if (schoolsData && schoolsData.length > 0 && !userLocation) {
                     updateVisibleSchools();
                 }
             });
             
             map.on('zoomend', function() {
+                // Only update visible schools if no address search is active
                 if (schoolsData && schoolsData.length > 0 && !userLocation) {
                     updateVisibleSchools();
                 }
             });
             
+            // Trigger map resize after a short delay
             setTimeout(() => {
                 map.invalidateSize();
             }, 100);
         }
 
+        // Color based on school type from ORDINESCUOLA field
         function getSchoolColor(school) {
+            // Use the processed SCHOOL_TYPE for more reliable classification
             switch (school.SCHOOL_TYPE) {
                 case 'primaria':
-                    return '#092FAC';
+                    return '#092FAC'; // GS Dark Blue - Scuola Primaria
                 case 'secondaria_i':
-                    return '#9F80FF';
+                    return '#9F80FF'; // GS Purple - Scuola Secondaria I Grado  
                 case 'secondaria_ii':
-                    return '#5DC18B';
+                    return '#5DC18B'; // GS Green - Scuola Secondaria II Grado
                 default:
-                    return '#FF6B4A';
+                    return '#FF6B4A'; // GS Orange - Other
             }
         }
 
+        // Format school type for display from ORDINESCUOLA
         function formatSchoolType(school) {
-            return school.SCHOOL_TYPE_DISPLAY || school.TYPE_ORIGINAL || 'Other Schools';
+            return school.SCHOOL_TYPE_DISPLAY || school.ORDINESCUOLA || 'Other Schools';
         }
 
+        // Show all schools on map immediately
         function showAllSchoolsOnMap() {
             if (!schoolsData || schoolsData.length === 0) {
-                console.log('No school data available');
+                console.log('❌ No school data available for display');
                 return;
             }
             
-            console.log(`Displaying ${schoolsData.length} schools on map`);
+            console.log(`🗺️ Displaying ${schoolsData.length} schools on map`);
             markersGroup.clearLayers();
             
-            schoolsData.forEach((school) => {
+            // Add all schools as markers
+            schoolsData.forEach((school, index) => {
                 const color = getSchoolColor(school);
                 
+                // Create circle marker with size based on student count
                 const baseRadius = 4;
                 const maxRadius = 15;
                 const radius = school.NUM_ISCR ? 
                     Math.max(baseRadius, Math.min(maxRadius, baseRadius + (school.NUM_ISCR / 80))) : 
                     baseRadius;
+                
+                // Debug first few schools
+                if (index < 3) {
+                    console.log(`School ${index + 1}: ${school.DENOMINAZIONE} at [${school.LAT_Y_4326}, ${school.LONG_X_4326}]`);
+                }
                 
                 const marker = L.circleMarker([school.LAT_Y_4326, school.LONG_X_4326], {
                     radius: radius,
@@ -780,20 +896,22 @@
                         <h3 style="color: ${color}; margin: 0 0 10px 0; font-size: 1.1rem;">
                             ${school.DENOMINAZIONE}
                         </h3>
-                        <p><strong>${getIcon('school')} Type:</strong> ${formatSchoolType(school)}</p>
-                        <p><strong>${getIcon('students')} Students:</strong> ${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</p>
-                        <p><strong>${getIcon('address')} Address:</strong> ${school.INDIRIZZO}</p>
-                        <p><strong>${getIcon('city')} City:</strong> ${school.COMUNE}</p>
+                        <p><strong>🏫 Type:</strong> ${formatSchoolType(school)}</p>
+                        <p><strong>👥 Students:</strong> ${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</p>
+                        <p><strong>📍 Address:</strong> ${school.INDIRIZZO}</p>
+                        <p><strong>🌍 Province:</strong> ${school.PROVINCIA}</p>
                     </div>
                 `);
                 
                 marker.addTo(markersGroup);
             });
             
-            console.log(`${schoolsData.length} schools successfully added to map`);
+            console.log(`✅ ${schoolsData.length} schools successfully added to map`);
             
+            // Show results panel with all schools initially
             document.getElementById('mainContent').style.display = 'grid';
             
+            // Force map refresh
             setTimeout(() => {
                 if (map) {
                     map.invalidateSize();
@@ -801,25 +919,32 @@
             }, 100);
         }
 
+        // Update visible schools based on current map view (only for browsing mode)
         function updateVisibleSchools() {
             if (!map || !schoolsData || schoolsData.length === 0) return;
             
+            // Get current map bounds
             const bounds = map.getBounds();
             
+            // Filter schools that are visible in current view
             const visibleSchools = schoolsData.filter(school => 
                 bounds.contains([school.LAT_Y_4326, school.LONG_X_4326])
             );
             
+            // Update results display (only for browsing mode)
             displayVisibleSchools(visibleSchools);
         }
 
+        // Display schools visible in current map view
         function displayVisibleSchools(visibleSchools) {
             const resultsContainer = document.getElementById('schoolResults');
             const statsContainer = document.getElementById('resultsStats');
             
+            // Calculate statistics for visible schools
             const schoolsWithStudents = visibleSchools.filter(school => school.NUM_ISCR > 0);
             const totalStudents = schoolsWithStudents.reduce((sum, school) => sum + school.NUM_ISCR, 0);
             
+            // Count by type
             const typeCount = {
                 primaria: visibleSchools.filter(s => s.SCHOOL_TYPE === 'primaria').length,
                 secondaria_i: visibleSchools.filter(s => s.SCHOOL_TYPE === 'secondaria_i').length,
@@ -827,42 +952,46 @@
                 other: visibleSchools.filter(s => s.SCHOOL_TYPE === 'other').length
             };
             
-            // Build stats text like Milan version
-            let statsText = `🏫 ${visibleSchools.length} schools in current view`;
-            
+            // Different display text based on whether user has searched or not
+            let statsText = '';
             if (userLocation) {
+                // User has searched for an address - show radius results
                 const radius = parseInt(document.getElementById('radiusSelect').value);
-                statsText = `🏫 ${visibleSchools.length} schools within ${radius}m radius`;
+                statsText = `📊 ${visibleSchools.length} schools within ${radius}m radius`;
+            } else {
+                // No address search - show current view
+                statsText = `📊 ${visibleSchools.length} schools in current view`;
             }
             
             if (schoolsWithStudents.length > 0) {
                 statsText += ` | 👥 ${totalStudents.toLocaleString()} total students`;
             }
             
-            // Add type breakdown with colored indicators
-            const typeBreakdownParts = [];
-            if (typeCount.primaria > 0) typeBreakdownParts.push(`🔵 ${typeCount.primaria} Primary`);
-            if (typeCount.secondaria_i > 0) typeBreakdownParts.push(`🟣 ${typeCount.secondaria_i} Sec. I Grado`);
-            if (typeCount.secondaria_ii > 0) typeBreakdownParts.push(`🟢 ${typeCount.secondaria_ii} Sec. II Grado`);
-            if (typeCount.other > 0) typeBreakdownParts.push(`🔴 ${typeCount.other} Other`);
+            // Add type breakdown with colored circles
+            const typeBreakdown = [];
+            if (typeCount.primaria > 0) typeBreakdown.push(`🔵 ${typeCount.primaria} Primaria`);
+            if (typeCount.secondaria_i > 0) typeBreakdown.push(`🟣 ${typeCount.secondaria_i} Sec. I Grado`);
+            if (typeCount.secondaria_ii > 0) typeBreakdown.push(`🟢 ${typeCount.secondaria_ii} Sec. II Grado`);
+            if (typeCount.other > 0) typeBreakdown.push(`🔴 ${typeCount.other} Other`);
             
-            if (typeBreakdownParts.length > 0) {
-                statsText += ` | ${typeBreakdownParts.join(', ')}`;
+            if (typeBreakdown.length > 0) {
+                statsText += ` | ${typeBreakdown.join(', ')}`;
             }
             
             statsContainer.innerHTML = `<div class="stats">${statsText}</div>`;
             
+            // Show schools (limit to 50 for performance)
             const schoolsToShow = visibleSchools.slice(0, 50);
             
             let resultsHTML = '';
             if (visibleSchools.length > schoolsToShow.length) {
                 const contextText = userLocation ? 
-                    `Showing first ${schoolsToShow.length} of ${visibleSchools.length} schools within radius.` :
+                    `Showing first ${schoolsToShow.length} of ${visibleSchools.length} schools in radius.` :
                     `Showing first ${schoolsToShow.length} of ${visibleSchools.length} visible schools. Zoom in for more detail.`;
                     
                 resultsHTML += `
                     <div style="background: var(--gs-light-blue); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                        <strong>🔍 Search Results</strong><br>
+                        <strong>📍 Search Results</strong><br>
                         ${contextText}
                     </div>
                 `;
@@ -885,20 +1014,16 @@
                     <div class="school-name">${school.DENOMINAZIONE}</div>
                     <div class="school-info">
                         <div class="info-item">
-                            <span class="info-label">${getIcon('school')} Type:</span>
+                            <span class="info-label">🏫 Type:</span>
                             <span>${formatSchoolType(school)}</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">${getIcon('address')} Address:</span>
+                            <span class="info-label">📍 Address:</span>
                             <span>${school.INDIRIZZO}</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">${getIcon('students')} Students:</span>
+                            <span class="info-label">👥 Students:</span>
                             <span class="student-count">${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">${getIcon('city')} City:</span>
-                            <span>${school.COMUNE}</span>
                         </div>
                     </div>
                 </div>
@@ -907,13 +1032,74 @@
             resultsContainer.innerHTML = resultsHTML;
         }
 
-        function focusSchoolOnMap(lat, lon) {
-            map.setView([lat, lon], 19);
+        // Display search results
+        function displayResults(nearbySchools) {
+            const resultsContainer = document.getElementById('schoolResults');
+            const statsContainer = document.getElementById('resultsStats');
+            
+            // Calculate total students more carefully
+            const schoolsWithStudents = nearbySchools.filter(school => school.NUM_ISCR > 0);
+            const totalStudents = schoolsWithStudents.reduce((sum, school) => sum + school.NUM_ISCR, 0);
+            
+            // Count by type for analysis
+            const typeCount = {
+                primaria: nearbySchools.filter(s => s.SCHOOL_TYPE === 'primaria').length,
+                secondaria_i: nearbySchools.filter(s => s.SCHOOL_TYPE === 'secondaria_i').length,
+                secondaria_ii: nearbySchools.filter(s => s.SCHOOL_TYPE === 'secondaria_ii').length,
+                other: nearbySchools.filter(s => s.SCHOOL_TYPE === 'other').length
+            };
+            
+            let statsText = `📊 ${nearbySchools.length} schools found`;
+            if (schoolsWithStudents.length > 0) {
+                statsText += ` | 👥 ${totalStudents.toLocaleString()} total students`;
+            }
+            
+            // Add type breakdown for area analysis
+            const typeBreakdown = [];
+            if (typeCount.primaria > 0) typeBreakdown.push(`🔵 ${typeCount.primaria} Primaria`);
+            if (typeCount.secondaria_i > 0) typeBreakdown.push(`🟣 ${typeCount.secondaria_i} Sec. I Grado`);
+            if (typeCount.secondaria_ii > 0) typeBreakdown.push(`🟢 ${typeCount.secondaria_ii} Sec. II Grado`);
+            if (typeCount.other > 0) typeBreakdown.push(`🔴 ${typeCount.other} Other`);
+            
+            if (typeBreakdown.length > 0) {
+                statsText += ` | ${typeBreakdown.join(', ')}`;
+            }
+            
+            statsContainer.innerHTML = `<div class="stats">${statsText}</div>`;
+            
+            // School cards
+            resultsContainer.innerHTML = nearbySchools.map(school => `
+                <div class="school-card" onclick="focusSchoolOnMap(${school.LAT_Y_4326}, ${school.LONG_X_4326})">
+                    <div class="distance-badge">${school.distance}m away</div>
+                    <div class="school-name">${school.DENOMINAZIONE}</div>
+                    <div class="school-info">
+                        <div class="info-item">
+                            <span class="info-label">🏫 Type:</span>
+                            <span>${formatSchoolType(school)}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">📍 Address:</span>
+                            <span>${school.INDIRIZZO}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">👥 Students:</span>
+                            <span class="student-count">${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
+        // Focus map on school with very close zoom
+        function focusSchoolOnMap(lat, lon) {
+            map.setView([lat, lon], 19); // Maximum close zoom when clicking on school
+        }
+
+        // Add markers to map for search results
         function addMarkersToMap(nearbySchools, userLat, userLon) {
             markersGroup.clearLayers();
             
+            // Add radius circle to show search area
             const radius = parseInt(document.getElementById('radiusSelect').value);
             const radiusCircle = L.circle([userLat, userLon], {
                 radius: radius,
@@ -922,10 +1108,11 @@
                 weight: 2,
                 opacity: 0.8,
                 fillOpacity: 0.1
-            }).bindPopup(`<strong>📍 Search Area</strong><br>Radius: ${radius}m`);
+            }).bindPopup(`<strong>🔍 Search Area</strong><br>Radius: ${radius}m`);
             
             radiusCircle.addTo(markersGroup);
             
+            // User marker with bright yellow icon for better visibility
             const userIcon = L.divIcon({
                 className: 'user-marker',
                 html: '<div style="background: #FFD363; width: 24px; height: 24px; border-radius: 50%; border: 4px solid #041345; box-shadow: 0 3px 8px rgba(0,0,0,0.4); position: relative;"><div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #041345; font-weight: bold; font-size: 14px;">📍</div></div>',
@@ -937,9 +1124,11 @@
                 .bindPopup('<strong>📍 Your Location</strong>')
                 .addTo(markersGroup);
             
+            // School markers with size based on student count
             nearbySchools.forEach(school => {
                 const color = getSchoolColor(school);
                 
+                // Scale marker size by student count
                 const baseRadius = 6;
                 const maxRadius = 20;
                 const studentRadius = school.NUM_ISCR ? Math.min(maxRadius, baseRadius + (school.NUM_ISCR / 50)) : baseRadius;
@@ -956,33 +1145,39 @@
                         <h3 style="color: ${color}; margin: 0 0 10px 0; font-size: 1.1rem;">
                             ${school.DENOMINAZIONE}
                         </h3>
-                        <p><strong>${getIcon('school')} Type:</strong> ${formatSchoolType(school)}</p>
-                        <p><strong>${getIcon('distance')} Distance:</strong> ${school.distance}m</p>
-                        <p><strong>${getIcon('students')} Students:</strong> ${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</p>
-                        <p><strong>${getIcon('address')} Address:</strong> ${school.INDIRIZZO}</p>
-                        <p><strong>${getIcon('city')} City:</strong> ${school.COMUNE}</p>
+                        <p><strong>🏫 Type:</strong> ${formatSchoolType(school)}</p>
+                        <p><strong>📍 Distance:</strong> ${school.distance}m</p>
+                        <p><strong>👥 Students:</strong> ${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</p>
+                        <p><strong>📍 Address:</strong> ${school.INDIRIZZO}</p>
+                        <p><strong>🌍 Province:</strong> ${school.PROVINCIA}</p>
                     </div>
                 `).addTo(markersGroup);
             });
             
+            // Fit map to results with much closer zoom
             if (nearbySchools.length > 0) {
                 const allPoints = [
                     [userLat, userLon],
                     ...nearbySchools.map(school => [school.LAT_Y_4326, school.LONG_X_4326])
                 ];
                 
-                const radiusInDegrees = radius / 111000;
+                // Create bounds that include the radius circle
+                const radiusInDegrees = radius / 111000; // Approximate conversion from meters to degrees
                 const circleBounds = L.latLngBounds([
                     [userLat - radiusInDegrees, userLon - radiusInDegrees],
                     [userLat + radiusInDegrees, userLon + radiusInDegrees]
                 ]);
                 
+                // Extend bounds to include all schools
                 allPoints.forEach(point => circleBounds.extend(point));
                 
+                // Fit map to the extended bounds
                 map.fitBounds(circleBounds, {
-                    padding: [20, 20]
+                    padding: [20, 20] // Padding for better visibility
                 });
+                
             } else {
+                // If no schools found, fit to show the radius circle
                 const radiusInDegrees = radius / 111000;
                 const circleBounds = L.latLngBounds([
                     [userLat - radiusInDegrees, userLon - radiusInDegrees],
@@ -991,25 +1186,30 @@
                 map.fitBounds(circleBounds, { padding: [20, 20] });
             }
             
+            // Refresh map
             setTimeout(() => {
                 map.invalidateSize();
             }, 100);
         }
 
+        // Show status message
         function showStatus(message) {
             const statusDiv = document.getElementById('statusMessage');
             statusDiv.innerHTML = `<div class="loading">${message}</div>`;
         }
 
+        // Show error message
         function showError(message) {
             const statusDiv = document.getElementById('statusMessage');
             statusDiv.innerHTML = `<div class="error">${message}</div>`;
         }
 
+        // Main search function - enhanced for empty address handling
         async function performSearch() {
             const address = document.getElementById('addressInput').value.trim();
             const radius = parseInt(document.getElementById('radiusSelect').value);
             
+            // If address is empty, show all schools
             if (!address) {
                 userLocation = null;
                 showAllSchoolsOnMap();
@@ -1018,12 +1218,13 @@
             }
             
             if (!schoolsData || schoolsData.length === 0) {
-                showError('No school data available! Please load the CSV file first.');
+                showError('❌ No school data available! Please refresh the page.');
                 return;
             }
             
             showStatus('🔍 Searching for address...');
             
+            // Geocoding
             const location = await geocodeAddress(address);
             if (!location) {
                 showError('Address not found. Please check your input.');
@@ -1033,6 +1234,7 @@
             userLocation = location;
             showStatus('📊 Calculating distances to schools...');
             
+            // Find nearby schools within radius
             const nearbySchools = [];
             
             for (const school of schoolsData) {
@@ -1049,47 +1251,124 @@
                 }
             }
             
+            // Sort by distance
             nearbySchools.sort((a, b) => a.distance - b.distance);
             
+            // Display results - use dedicated search results display
             document.getElementById('statusMessage').innerHTML = '';
             document.getElementById('mainContent').style.display = 'grid';
             
-            displayVisibleSchools(nearbySchools);
+            displaySearchResults(nearbySchools, radius);
             addMarkersToMap(nearbySchools, location.lat, location.lon);
         }
 
+        // Separate function for search results (within radius)
+        function displaySearchResults(nearbySchools, radius) {
+            const resultsContainer = document.getElementById('schoolResults');
+            const statsContainer = document.getElementById('resultsStats');
+            
+            // Calculate total students
+            const schoolsWithStudents = nearbySchools.filter(school => school.NUM_ISCR > 0);
+            const totalStudents = schoolsWithStudents.reduce((sum, school) => sum + school.NUM_ISCR, 0);
+            
+            // Count by type for analysis
+            const typeCount = {
+                primaria: nearbySchools.filter(s => s.SCHOOL_TYPE === 'primaria').length,
+                secondaria_i: nearbySchools.filter(s => s.SCHOOL_TYPE === 'secondaria_i').length,
+                secondaria_ii: nearbySchools.filter(s => s.SCHOOL_TYPE === 'secondaria_ii').length,
+                other: nearbySchools.filter(s => s.SCHOOL_TYPE === 'other').length
+            };
+            
+            let statsText = `📊 ${nearbySchools.length} schools within ${radius}m radius`;
+            if (schoolsWithStudents.length > 0) {
+                statsText += ` | 👥 ${totalStudents.toLocaleString()} total students`;
+            }
+            
+            // Add type breakdown for area analysis
+            const typeBreakdown = [];
+            if (typeCount.primaria > 0) typeBreakdown.push(`🔵 ${typeCount.primaria} Primaria`);
+            if (typeCount.secondaria_i > 0) typeBreakdown.push(`🟣 ${typeCount.secondaria_i} Sec. I Grado`);
+            if (typeCount.secondaria_ii > 0) typeBreakdown.push(`🟢 ${typeCount.secondaria_ii} Sec. II Grado`);
+            if (typeCount.other > 0) typeBreakdown.push(`🔴 ${typeCount.other} Other`);
+            
+            if (typeBreakdown.length > 0) {
+                statsText += ` | ${typeBreakdown.join(', ')}`;
+            }
+            
+            statsContainer.innerHTML = `<div class="stats">${statsText}</div>`;
+            
+            // School cards - only schools within radius
+            if (nearbySchools.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div style="background: var(--gs-light-blue); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <strong>🔍 No Schools Found</strong><br>
+                        No schools found within ${radius}m radius. Try increasing the radius or searching a different location.
+                    </div>
+                `;
+            } else {
+                resultsContainer.innerHTML = nearbySchools.map(school => `
+                    <div class="school-card" onclick="focusSchoolOnMap(${school.LAT_Y_4326}, ${school.LONG_X_4326})">
+                        <div class="distance-badge">${school.distance}m away</div>
+                        <div class="school-name">${school.DENOMINAZIONE}</div>
+                        <div class="school-info">
+                            <div class="info-item">
+                                <span class="info-label">🏫 Type:</span>
+                                <span>${formatSchoolType(school)}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">📍 Address:</span>
+                                <span>${school.INDIRIZZO}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">👥 Students:</span>
+                                <span class="student-count">${school.NUM_ISCR > 0 ? school.NUM_ISCR : 'N/A'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Watch address input for changes
         function watchAddressInput() {
             const addressInput = document.getElementById('addressInput');
             
+            // Watch for input changes
             addressInput.addEventListener('input', function() {
                 const address = this.value.trim();
                 
+                // If address is cleared, reset to all schools view
                 if (!address) {
-                    userLocation = null;
+                    userLocation = null; // Clear user location
                     showAllSchoolsOnMap();
                     updateVisibleSchools();
                 }
             });
             
+            // Also watch for clear button or escape key
             addressInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     this.value = '';
-                    userLocation = null;
+                    userLocation = null; // Clear user location
                     showAllSchoolsOnMap();
                     updateVisibleSchools();
                 }
             });
         }
 
+        // Event Listeners
         document.getElementById('searchForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             await performSearch();
         });
 
+        // Listen for radius changes to update results if address is already searched
         document.getElementById('radiusSelect').addEventListener('change', function() {
             if (userLocation) {
+                // If user has already searched, recalculate with new radius
                 const radius = parseInt(this.value);
                 
+                // Find nearby schools within new radius
                 const nearbySchools = [];
                 
                 for (const school of schoolsData) {
@@ -1106,24 +1385,45 @@
                     }
                 }
                 
+                // Sort by distance
                 nearbySchools.sort((a, b) => a.distance - b.distance);
                 
-                displayVisibleSchools(nearbySchools);
+                // Update display and map
+                displaySearchResults(nearbySchools, radius);
                 addMarkersToMap(nearbySchools, userLocation.lat, userLocation.lon);
             }
         });
 
+        // On page load
         window.addEventListener('load', async () => {
-            // Initialize map
+            // First initialize the map
             initMap();
             
-            // Try to load data from GitHub automatically
-            const loaded = await loadFromGitHub();
-            
-            if (loaded) {
-                console.log('Data loaded successfully from GitHub');
+            // Then load school data
+            const dataLoaded = await loadSchoolData();
+            if (dataLoaded) {
+                // Show the main content and all schools
+                document.getElementById('mainContent').style.display = 'grid';
+                showAllSchoolsOnMap();
+                
+                // Keep the map centered on Milan Centro instead of fitting all schools
+                // Only fit bounds if user is searching, not on initial load
+                
+                // Update visible schools display
+                setTimeout(() => {
+                    updateVisibleSchools();
+                }, 500);
+                
+                document.getElementById('statusMessage').innerHTML = '';
+                showStatus(`✅ ${schoolsData.length} schools loaded! All schools visible. Zoom in or search by address.`);
+                setTimeout(() => {
+                    document.getElementById('statusMessage').innerHTML = '';
+                }, 3000);
+                
+                // Start watching address input for changes
+                watchAddressInput();
             } else {
-                console.log('GitHub loading failed, manual upload required');
+                showError('❌ Failed to load school data. Please refresh the page.');
             }
         });
     </script>
